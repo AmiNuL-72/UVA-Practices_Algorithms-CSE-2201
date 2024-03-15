@@ -1,1 +1,41 @@
+/* nCr =       n!             x
+          ------------  ->   ---   -> x*(y^-1)
+            r!*(n-r)!         y
 
+  A`1 = Big_Mod (A ,M-2, M);
+------------------------------------*/
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll   long long
+const int M=1e9+7;
+const int N=1e6+10;
+int fact[N];
+
+ll Big_Mod(ll b, ll p, ll M){
+    if(p==0) return 1;
+    if(p%2==0){
+        ll x=Big_Mod(b,p/2,M);
+        return ((x%M)*(x%M))%M;
+    }
+    else{
+        return ((b%M)*(Big_Mod(b,p-1,M)))%M;
+    }
+}
+
+int main(){
+    fact[0]=1;
+    for(int i=1; i<N; i++){
+        fact[i]=(fact[i-1]*1LL*i)%M;
+    }
+    ll t; cin>>t;
+    while(t--){
+        int n,r; cin>>n>>r;
+        int x=fact[n];
+        int y=(fact[n-r]*1LL*fact[r])%M;
+        //cout<<x/y<<endl;
+        int ans = (x * Big_Mod(y,M-2,M))%M;
+        cout<<ans<<endl;
+    }
+    return 0;
+}
